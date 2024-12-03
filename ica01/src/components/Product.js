@@ -1,22 +1,40 @@
+import React, { useState } from 'react';
 import '../assets/CSS/layout.css';
-import { flowers } from './FlowerDB';
-export default function Product({flower}){
-    
-    return(
-        <div className="grid-item">
 
-            <div class="card">
-                <img  
-                   src={require(`../assets/image/${flower.img}`)}
-                    alt={flowers.name}
+export default function Product({ flower, onAddToCart }) {
+    const [quantity, setQuantity] = useState(1);
+
+    const handleAddToCart = () => {
+        if (quantity > 0) {
+            onAddToCart({ ...flower, quantity: parseInt(quantity) });
+        }
+    };
+
+    return (
+        <div className="grid-item">
+            <div className="card">
+                <img
+                    src={require(`../assets/image/${flower.img}`)}
+                    alt={flower.name}
+                    className="flower-image"
                 />
-                <div class="card-body">
-                    <h5 class="card-title">{flower.name} Price: {flower.price}</h5>
-                    <div class="quantity-container">
-                        <label for="quantity">Quantity:</label>
-                        <input type="number" id="quantity" name="quantity" />
+                <div className="card-body">
+                    <h5 className="card-title">
+                        {flower.name} - Price: ${flower.price}
+                    </h5>
+                    <div className="quantity-container">
+                        <label htmlFor={`quantity-${flower.id}`}>Quantity:</label>
+                        <input
+                            type="number"
+                            id={`quantity-${flower.id}`}
+                            min="1"
+                            value={quantity}
+                            onChange={(e) => setQuantity(e.target.value)}
+                        />
                     </div>
-                    <button class="card-button">Add to Cart</button>
+                    <button className="card-button" onClick={handleAddToCart}>
+                        Add to Cart
+                    </button>
                 </div>
             </div>
         </div>
